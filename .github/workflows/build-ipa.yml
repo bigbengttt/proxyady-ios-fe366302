@@ -1,0 +1,69 @@
+name: Build IPA Unsigned
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Prepare
+        shell: bash
+        run: |
+          set -e
+          brew install openssl@3 || true
+          echo "CPATH=$(brew --prefix openssl@3)/include:$CPATH" >> $GITHUB_ENV
+          echo "LIBRARY_PATH=$(brew --prefix openssl@3)/lib:$LIBRARY_PATH" >> $GITHUB_ENV
+          echo "PKG_CONFIG_PATH=$(brew --prefix openssl@3)/lib/pkgconfig:$PKG_CONFIG_PATH" >> $GITHUB_ENV
+          git submodule update --init --recursive || true
+          find . -name Package.resolved -delete || true
+          echo "📂 Projetos encontrados:"
+          find . -name "*.xcodeproj" -o -name "*.xcworkspace"
+
+      - name: Build unsigned IPA
+        shell: bash
+        run: |
+          set -e
+          WORKSPACE=$(find . -name "*.xcworkspace" | head -n 1)
+          PROJECT=$(find . -name "*.xcodeproj" | head -n 1)
+
+          if [ -n "$WORKSPACE" ]; then
+            echo "✅ Workspace: $WORKSPACE"
+            SCHEME=$(xcodebuild -list -workspace "$WORKSPACE" | awk '/Schemes:/{flag=1;next} flag && NF {print $1; exit}')
+            echo "✅ Scheme: $SCHEME"
+            xcodebuild -resolvePackageDependencies -workspace "$WORKSPACE" -scheme "$SCHEME" || true
+            xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" clean build
+          elif [ -n "$PROJECT" ]; then
+            echo "✅ Project: $PROJECT"
+            SCHEME=$(xcodebuild -list -project "$PROJECT" | awk '/Schemes:/{flag=1;next} flag && NF {print $1; exit}')
+            echo "✅ Scheme: $SCHEME"
+            xcodebuild -resolvePackageDependencies -project "$PROJECT" -scheme "$SCHEME" || true
+            xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" clean build
+          else
+            echo "❌ Nenhum .xcodeproj ou .xcworkspace encontrado"
+            exit 1
+          fi
+
+          APP=$(find build -type d -name "*.app" | head -n 1)
+          if [ -z "$APP" ]; then
+            echo "❌ Nenhum .app gerado"
+            find build -maxdepth 8 | head -n 300
+            exit 1
+          fi
+
+          rm -rf Payload unsigned.ipa
+          mkdir Payload
+          cp -R "$APP" Payload/
+          zip -qry unsigned.ipa Payload
+          ls -lh unsigned.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-ipa
+          path: unsigned.ipa
