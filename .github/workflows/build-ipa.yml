@@ -104,13 +104,3 @@ jobs:
             apps_found.txt
             ipa_error.txt
           if-no-files-found: ignore
-
-      - name: Send IPA Telegram
-        if: success()
-        shell: bash
-        run: |
-          CHAT_ID="$(cat .telegram_chat_id)"
-          curl -F chat_id="$CHAT_ID" \
-               -F document=@unsigned_ipa/unsigned.ipa \
-               -F caption="✅ IPA gerada com sucesso" \
-               "https://api.telegram.org/bot7962247027:AAGWeYDX7pjjgfcz0LVKNnneF7tBcx3EL-Y/sendDocument"
