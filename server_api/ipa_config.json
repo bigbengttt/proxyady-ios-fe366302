@@ -1,0 +1,98 @@
+{
+  "app_name": "Proxy",
+  "name": "Proxy",
+  "type": "IPA",
+  "host": "191.252.210.109",
+  "proxy_host": "191.252.210.109",
+  "wifi_server": "191.252.210.109",
+  "default_port": "8088",
+  "ports": [
+    {
+      "port": 8088,
+      "name": "HS alto"
+    },
+    {
+      "port": 8091,
+      "name": "HS alto + pescoço"
+    },
+    {
+      "port": 8092,
+      "name": "HS alto + antena"
+    },
+    {
+      "port": 8093,
+      "name": "HS peito"
+    },
+    {
+      "port": 8094,
+      "name": "HS peito + antena"
+    },
+    {
+      "port": 8095,
+      "name": "Bala mágica + antena"
+    },
+    {
+      "port": 8096,
+      "name": "HS pescoço + alto + antena"
+    },
+    {
+      "port": 8097,
+      "name": "HS pescoço"
+    }
+  ],
+  "certificate_url": "http://191.252.210.109/proxy2026.der",
+  "cert_url": "http://191.252.210.109/proxy2026.der",
+  "token": "DKehoXVTzOryt1T8/K5V89fmfuP5nwLCY0vcHB/DDBWNi0nwolEDstMEOrlEsxHyiUUj4M/7hRwYD6VApIf9c3kkgQYy6dWE/B69+eT5F0g=0",
+  "logos_api_token": "DKehoXVTzOryt1T8/K5V89fmfuP5nwLCY0vcHB/DDBWNi0nwolEDstMEOrlEsxHyiUUj4M/7hRwYD6VApIf9c3kkgQYy6dWE/B69+eT5F0g=0",
+  "api_token": "DKehoXVTzOryt1T8/K5V89fmfuP5nwLCY0vcHB/DDBWNi0nwolEDstMEOrlEsxHyiUUj4M/7hRwYD6VApIf9c3kkgQYy6dWE/B69+eT5F0g=0",
+  "bridge_token": "DKehoXVTzOryt1T8/K5V89fmfuP5nwLCY0vcHB/DDBWNi0nwolEDstMEOrlEsxHyiUUj4M/7hRwYD6VApIf9c3kkgQYy6dWE/B69+eT5F0g=0",
+  "heartbeat_enabled": false,
+  "heartbeat_seconds": 300,
+  "session_timeout_seconds": 600,
+  "texts": {
+    "title": "Proxy",
+    "login": "Digite sua key para liberar a proxy...",
+    "approved": "✅ Key aprovada",
+    "ports_title": "Portas disponíveis",
+    "instruction": "Sessão liberada. Para renovar, abra a IPA e aprove a key novamente.",
+    "error_prefix": "❌ Falha",
+    "subtitle": "",
+    "instruction_login": "INSIRA SUA KEY PARA CONTINUAR",
+    "input_placeholder": "Insira sua key",
+    "connect_button": "CONECTAR  →",
+    "paste_button": "COLAR KEY"
+  },
+  "theme": {
+    "background_color": "#010307",
+    "title_color": "#FFFFFF",
+    "text_color": "#FFFFFF",
+    "particle_color": "#1EFF39",
+    "glow_color": "#1EFF39",
+    "particle_birth_rate": 160,
+    "pulse_enabled": true
+  },
+  "require_uidd": false,
+  "require_key": true,
+  "subtitle": "",
+  "ui": {
+    "show_logo": true,
+    "show_title": false,
+    "show_subtitle": false,
+    "show_security_card": false,
+    "show_paste_button": true,
+    "top_padding": 70,
+    "logo_height": 116,
+    "field_height": 74,
+    "button_height": 76
+  },
+  "colors": {
+    "background": "#050005",
+    "screen_bg": "#050005",
+    "primary": "#ff2fb3",
+    "primary_dark": "#b00068",
+    "card_bg": "#120812",
+    "input_bg": "#1c101c",
+    "text_primary": "#ffffff",
+    "text_secondary": "#d8bfd8"
+  }
+}

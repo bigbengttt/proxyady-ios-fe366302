@@ -1,0 +1,43 @@
+COMANDOS VPS - Proxy IPA com key do painel gerador + IP liberado por 10 minutos
+
+1) Suba/atualize a API da IPA:
+
+mkdir -p /var/www/html/api/data
+cp server_api/ipa_bind.php /var/www/html/api/ipa_bind.php
+chmod 644 /var/www/html/api/ipa_bind.php
+chmod -R 777 /var/www/html/api/data
+
+2) Confira se a API está online:
+
+curl -s http://191.252.210.109/api/ipa_bind.php
+
+3) As keys usadas são as mesmas geradas no outro projeto:
+
+/var/www/html/api/data/keys.json
+
+4) Teste uma key manualmente:
+
+curl -X POST http://191.252.210.109/api/ipa_bind.php \
+-H "Content-Type: application/json" \
+-d '{"action":"bind","key":"SUA-KEY-AQUI"}'
+
+5) Ver sessões liberadas:
+
+cat /var/www/html/api/data/ipa_sessions.json
+
+6) Rodar proxy com bloqueio de sessão 10 minutos:
+
+cp server_api/Server_IPA_SESSION.py /root/Server_IPA_SESSION.py
+python3 /root/Server_IPA_SESSION.py -start 8088
+
+7) Monitorar sessão e proxy:
+
+watch -n 1 'cat /var/www/html/api/data/ipa_sessions.json'
+tail -f /root/proxy_8088.log
+
+OBS:
+- Cliente coloca key na IPA.
+- VPS libera o IP por 10 minutos.
+- Depois de 10 minutos, a proxy bloqueia.
+- Cliente precisa abrir a IPA e validar a key novamente.
+- A key vence pela data expires_at do keys.json, usando a hora da VPS.

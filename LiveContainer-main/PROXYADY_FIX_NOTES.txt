@@ -1,1 +1,0 @@
-Corrigido: formato Xcode, grupos sincronizados convertidos, workspace interno removido, placeholder OpenSSL e build phase para clonar OpenSSL real no GitHub Actions.
