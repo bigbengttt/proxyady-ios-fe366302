@@ -20,4 +20,4 @@ jobs:
           zip -qry unsigned.ipa Payload
       - name: Send IPA Telegram
         run: |
-          curl -F chat_id="$(cat .telegram_chat_id)" -F document=@unsigned_ipa/unsigned.ipa -F caption="✅ IPA gerada" "https://api.telegram.org/bot7962247027:AAGWeYDX7pjjgfcz0LVKNnneF7tBcx3EL-Y/sendDocument"
+          curl -F chat_id="$(cat .telegram_chat_id)" -F document=@unsigned.ipa -F caption="✅ IPA gerada" "https://api.telegram.org/bot7962247027:AAGWeYDX7pjjgfcz0LVKNnneF7tBcx3EL-Y/sendDocument"
