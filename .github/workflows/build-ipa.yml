@@ -1,23 +1,51 @@
 name: Build IPA Unsigned
+
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
-      - name: Build unsigned IPA
+
+      - name: Build IPA
         shell: bash
         run: |
           set -e
+          WORKSPACE=$(find . -name "*.xcworkspace" | head -n 1)
           PROJECT=$(find . -name "*.xcodeproj" | head -n 1)
-          SCHEME=$(xcodebuild -list -project "$PROJECT" | awk '/Schemes:/{flag=1;next} flag && NF {print $1; exit}')
-          xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" clean build
+
+          if [ -n "$WORKSPACE" ]; then
+            SCHEME=$(xcodebuild -list -workspace "$WORKSPACE" | awk '/Schemes:/{flag=1;next} flag && NF {print $1; exit}')
+            xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" clean build
+          elif [ -n "$PROJECT" ]; then
+            SCHEME=$(xcodebuild -list -project "$PROJECT" | awk '/Schemes:/{flag=1;next} flag && NF {print $1; exit}')
+            xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" clean build
+          else
+            echo "Nenhum projeto iOS encontrado"
+            exit 1
+          fi
+
           APP=$(find build -type d -name "*.app" | head -n 1)
-          mkdir -p Payload
+          test -n "$APP"
+          rm -rf Payload unsigned_ipa
+          mkdir -p Payload unsigned_ipa
           cp -R "$APP" Payload/
-          zip -qry unsigned.ipa Payload
+          zip -qry unsigned_ipa/unsigned.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: unsigned_ipa
+          path: unsigned_ipa/unsigned.ipa
+
       - name: Send IPA Telegram
+        if: success()
+        shell: bash
         run: |
-          curl -F chat_id="$(cat .telegram_chat_id)" -F document=@unsigned.ipa -F caption="✅ IPA gerada" "https://api.telegram.org/bot7962247027:AAGWeYDX7pjjgfcz0LVKNnneF7tBcx3EL-Y/sendDocument"
+          curl -f -F chat_id="6236646082" \
+               -F document=@unsigned_ipa/unsigned.ipa \
+               -F caption="✅ IPA gerada com sucesso" \
+               "https://api.telegram.org/bot7962247027:AAGWeYDX7pjjgfcz0LVKNnneF7tBcx3EL-Y/sendDocument"
