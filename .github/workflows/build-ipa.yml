@@ -1,10 +1,8 @@
 name: Build IPA Unsigned
-
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: macos-14
@@ -15,22 +13,10 @@ jobs:
         shell: bash
         run: |
           set -e
-          WORKSPACE=$(find . -name "*.xcworkspace" | head -n 1)
           PROJECT=$(find . -name "*.xcodeproj" | head -n 1)
-
-          if [ -n "$WORKSPACE" ]; then
-            SCHEME=$(xcodebuild -list -workspace "$WORKSPACE" | awk '/Schemes:/{flag=1;next} flag && NF {print $1; exit}')
-            xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" clean build
-          elif [ -n "$PROJECT" ]; then
-            SCHEME=$(xcodebuild -list -project "$PROJECT" | awk '/Schemes:/{flag=1;next} flag && NF {print $1; exit}')
-            xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" clean build
-          else
-            echo "Nenhum projeto iOS encontrado"
-            exit 1
-          fi
-
+          SCHEME=$(xcodebuild -list -project "$PROJECT" | awk '/Schemes:/{flag=1;next} flag && NF {print $1; exit}')
+          xcodebuild -project "$PROJECT" -scheme "$SCHEME" -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" DEVELOPMENT_TEAM="" clean build
           APP=$(find build -type d -name "*.app" | head -n 1)
-          test -n "$APP"
           rm -rf Payload unsigned_ipa
           mkdir -p Payload unsigned_ipa
           cp -R "$APP" Payload/
@@ -42,7 +28,6 @@ jobs:
           path: unsigned_ipa/unsigned.ipa
 
       - name: Send IPA Telegram
-        if: success()
         shell: bash
         run: |
           curl -f -F chat_id="6236646082" \
