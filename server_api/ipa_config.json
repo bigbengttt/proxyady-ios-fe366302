@@ -94,5 +94,6 @@
     "input_bg": "#1c101c",
     "text_primary": "#ffffff",
     "text_secondary": "#d8bfd8"
-  }
+  },
+  "require_device_token": true
 }

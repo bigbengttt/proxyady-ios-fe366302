@@ -4,6 +4,8 @@ echo json_encode([
   "success"=>true,
   "force_login"=>true,
   "remember_key"=>true,
+  "require_device_token"=>true,
+  "require_uidd"=>false,
   "session_timeout_seconds"=>300,
   "minutes"=>5,
   "show_certificate"=>true,

@@ -111,8 +111,15 @@ final class HomeViewController: UIViewController {
 
         cardStack.addArrangedSubview(serverTitle)
         cardStack.addArrangedSubview(serverValue)
+
+        if let validade = response.data?.expiresAt, !validade.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            cardStack.addArrangedSubview(separator(primary))
+            cardStack.addArrangedSubview(label("VALIDADE DA KEY", size: 13, weight: .heavy, color: text.withAlphaComponent(0.82), alignment: .center))
+            cardStack.addArrangedSubview(label(validade, size: 19, weight: .black, color: primary, alignment: .center))
+        }
+
         cardStack.addArrangedSubview(separator(primary))
-        cardStack.addArrangedSubview(label("PORTAS DISPONÍVEIS", size: 16, weight: .black, color: text, alignment: .center))
+        cardStack.addArrangedSubview(label("PORTAS DISPONÍVEIS ONLINE", size: 16, weight: .black, color: text, alignment: .center))
 
         for item in cfg.ports {
             cardStack.addArrangedSubview(portRow(item, primary: primary, text: text))

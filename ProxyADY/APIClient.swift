@@ -25,6 +25,7 @@ enum APIClient {
     private static let savedKeyStorage = "proxyady_saved_key"
     private static let keychainService = "com.proxyady.secure"
     private static let keychainAccount = "license_key"
+    private static let deviceTokenAccount = "device_install_token"
 
     static var savedKey: String? {
         if let key = KeychainStore.read(service: keychainService, account: keychainAccount) {
@@ -46,6 +47,17 @@ enum APIClient {
         KeychainStore.delete(service: keychainService, account: keychainAccount)
         UserDefaults.standard.removeObject(forKey: savedKeyStorage)
     }
+
+    static var installationToken: String {
+        if let token = KeychainStore.read(service: keychainService, account: deviceTokenAccount),
+           !token.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return token
+        }
+        let token = UUID().uuidString + "-" + String(Int(Date().timeIntervalSince1970))
+        KeychainStore.save(token, service: keychainService, account: deviceTokenAccount)
+        return token
+    }
+
     private static var remoteConfig = RemoteAppConfig.fallback
     static var config: RemoteAppConfig { remoteConfig }
     static var displayName: String { remoteConfig.appName.isEmpty ? AppConfig.appName : remoteConfig.appName }
@@ -113,7 +125,8 @@ enum APIClient {
             let body: [String: Any] = [
                 "action": "bind",
                 "key": key.trimmingCharacters(in: .whitespacesAndNewlines),
-                "device_id": UIDevice.current.identifierForVendor?.uuidString ?? "",
+                "device_token": installationToken,
+                "device_id": "",
                 "device_model": UIDevice.current.model,
                 "bundle": Bundle.main.bundleIdentifier ?? ""
             ]
