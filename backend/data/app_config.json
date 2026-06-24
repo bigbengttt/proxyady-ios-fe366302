@@ -1,0 +1,34 @@
+{
+  "app_name": "Gerador",
+  "theme": {
+    "background": "#0D0D14",
+    "primary": "#7B3EFF",
+    "secondary": "#A970FF"
+  },
+  "buttons": [],
+  "key_ui": {
+    "title_create": "Criar Key",
+    "title_list": "Keys",
+    "show_quantity": true,
+    "show_duration": true,
+    "show_alias": true,
+    "show_package": false,
+    "show_preview": false,
+    "show_auto_clean": false,
+    "show_multiple_activate": false,
+    "create_button_text": "Gerar Key",
+    "copy_button_text": "Copiar",
+    "delete_button_text": "Apagar marcadas",
+    "select_all_text": "Marcar todas",
+    "deselect_text": "Limpar",
+    "duration_options": [
+      "Hora",
+      "Dia",
+      "Semana",
+      "Mês",
+      "Ano"
+    ],
+    "default_duration_type": "Hora",
+    "default_alias": "Admin"
+  }
+}

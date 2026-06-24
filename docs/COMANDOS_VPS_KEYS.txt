@@ -1,0 +1,6 @@
+Suba a pasta backend/api para /var/www/html/api.
+Depois rode:
+
+chmod -R 777 /var/www/html/api/data
+curl -X POST http://191.252.210.109/api/generate_key.php -H "Content-Type: application/json" -d '{"quantity":2,"duration":1,"duration_type":"hour","alias":"Admin","package":"Painel rage"}'
+curl http://191.252.210.109/api/keys.php

@@ -1,0 +1,24 @@
+INSTALAR NA servidor
+
+Sua servidor atual:
+IP: 191.252.210.109
+Servidor web ativo: Apache porta 80
+URL da API: http://191.252.210.109/api
+
+COMANDOS:
+
+mkdir -p /var/www/html/api /var/www/html/admin /var/www/html/api/data
+cp -r backend/api/* /var/www/html/api/
+cp -r backend/admin/* /var/www/html/admin/
+chown -R www-data:www-data /var/www/html/api /var/www/html/admin
+chmod -R 755 /var/www/html/api /var/www/html/admin
+chmod -R 775 /var/www/html/api/data
+
+TESTAR:
+
+curl -i http://191.252.210.109/api/config.php
+curl -X POST http://191.252.210.109/api/register.php -H "Content-Type: application/json" -d '{"username":"teste","email":"teste@gmail.com","password":"1234"}'
+curl -X POST http://191.252.210.109/api/login.php -H "Content-Type: application/json" -d '{"login":"teste@gmail.com","email":"teste@gmail.com","password":"1234"}'
+
+OBS:
+Não precisa mexer no Nginx agora. O Apache já está respondendo na porta 80.

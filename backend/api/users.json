@@ -1,0 +1,16 @@
+[
+  {
+    "id": "nego",
+    "username": "nego",
+    "email": "nego",
+    "name": "nego",
+    "password": "123456",
+    "role": "admin",
+    "plan": "admin",
+    "credits": 9999,
+    "credit": 9999,
+    "balance": 9999,
+    "saldo": 9999,
+    "status": "active"
+  }
+]

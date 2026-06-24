@@ -1,0 +1,22 @@
+SUBIR CORREÇÕES NA servidor
+
+Copie a pasta backend/api/* para /var/www/html/api/ ou rode estes arquivos do ZIP.
+
+Regras novas:
+- usuário free/seller/admin só gera key se tiver crédito suficiente
+- 1 hora = 1 crédito
+- 1 dia = 1 crédito
+- 7 dias ou 1 semana = 3 créditos
+- 1 mês = 5 créditos
+- 1 ano = 15 créditos
+- custo total = custo da duração x quantidade
+- ao gerar key, o crédito é descontado automaticamente
+
+Teste gerar 3 keys de 1 dia:
+curl -X POST http://191.252.210.109/api/generate_key.php -H "Content-Type: application/json" -d '{"owner":"big","quantity":3,"duration":1,"duration_type":"day","alias":"BIGBENG"}'
+
+Colocar crédito/cargo em vendedor:
+curl -X POST http://191.252.210.109/api/admin/update_user.php -H "Content-Type: application/json" -d '{"email":"USUARIO_OU_EMAIL","role":"seller","credits":50}'
+
+Ver usuário:
+curl -X POST http://191.252.210.109/api/me.php -H "Content-Type: application/json" -d '{"email":"USUARIO_OU_EMAIL"}'

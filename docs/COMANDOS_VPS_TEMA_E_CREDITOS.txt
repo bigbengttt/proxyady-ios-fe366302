@@ -1,0 +1,89 @@
+COMANDOS PARA ATUALIZAR A servidor
+
+1) Envie os arquivos da pasta backend/api para:
+/var/www/html/api
+
+Ou, se quiser trocar só o visual para vermelho, rode:
+
+cat > /var/www/html/api/config.php << 'PHP'
+<?php
+header("Content-Type: application/json; charset=utf-8");
+
+echo json_encode([
+  "success" => true,
+  "app" => [
+    "name" => "Gerador",
+    "theme" => "dark_red"
+  ],
+  "app_name" => "Gerador",
+  "home_ui" => [
+    "welcome_text" => "Olá, big!",
+    "subtitle_text" => "Bem-vindo de volta 👑",
+    "show_balance" => true,
+    "show_plan" => true,
+    "show_admin_panel" => true,
+    "balance_title" => "Crédito disponível",
+    "plan_text" => "",
+    "admin_panel_title" => "Painel ADM rápido",
+    "admin_panel_subtitle" => "Coloque usuário/email, crédito e cargo",
+    "login_button_text" => "Atualizar usuário",
+    "roles" => ["free", "seller", "admin"]
+  ],
+  "colors" => [
+    "primary" => "#ff1e1e",
+    "secondary" => "#ff6666",
+    "primary_dark" => "#b30000",
+    "background" => "#08080d",
+    "card_bg" => "#16161f",
+    "card_border" => "#351111",
+    "text_primary" => "#ffffff",
+    "text_secondary" => "#c9c9d4",
+    "success" => "#22c55e",
+    "danger" => "#ef4444",
+    "button_gradient_1" => "#ff1e1e",
+    "button_gradient_2" => "#b30000"
+  ],
+  "buttons" => [],
+  "keys_ui" => [
+    "title_create" => "Criar Key",
+    "title_list" => "Keys",
+    "show_quantity" => true,
+    "show_duration" => true,
+    "show_alias" => true,
+    "show_package" => false,
+    "show_preview" => false,
+    "show_auto_clean" => false,
+    "show_multiple_activate" => false,
+    "create_button_text" => "Gerar Key",
+    "copy_button_text" => "Copiar",
+    "delete_button_text" => "Apagar marcadas",
+    "select_all_text" => "Marcar todas",
+    "deselect_text" => "Limpar",
+    "duration_types" => ["hour", "day", "week", "month", "year"],
+    "default_duration_type" => "Hora",
+    "default_alias" => "Admin"
+  ],
+  "features" => [
+    "enable_online_update" => true,
+    "enable_change_theme" => true,
+    "admin_can_add_credits" => true,
+    "admin_can_create_seller" => true
+  ]
+], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+PHP
+
+chmod 644 /var/www/html/api/config.php
+chmod -R 777 /var/www/html/api/data
+
+2) Testar se a servidor está retornando o tema vermelho:
+curl -s http://191.252.210.109/api/config.php | grep -E "dark_red|primary|ff1e1e"
+
+3) Testar colocar crédito/cargo para vendedor:
+curl -X POST http://191.252.210.109/api/admin/update_user.php \
+-H "Content-Type: application/json" \
+-d '{"email":"USUARIO_DO_VENDEDOR","role":"seller","credits":100}'
+
+4) Testar virar admin:
+curl -X POST http://191.252.210.109/api/admin/update_user.php \
+-H "Content-Type: application/json" \
+-d '{"email":"big","role":"admin","credits":9999}'

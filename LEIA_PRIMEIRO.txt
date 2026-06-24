@@ -1,0 +1,28 @@
+PROJETO CORRIGIDO - ProxyADY / Gerador
+
+1) A IPA agora aponta direto para sua servidor:
+   http://191.252.210.109/api
+
+2) Info.plist já libera HTTP:
+   NSAppTransportSecurity / NSAllowsArbitraryLoads = true
+
+3) Este projeto é SOMENTE sistema de geração de keys / vendedor / admin.
+   Não tem nada de proxy dentro da IPA.
+
+4) A API aceita o backend simples que você já criou na servidor:
+   /api/config.php
+   /api/register.php
+   /api/login.php
+
+5) Usuário novo entra como:
+   role = free
+   plan = free
+   credits = 0
+
+6) Para instalar backend completo na servidor:
+   copie a pasta backend/api para /var/www/html/api
+   copie backend/admin para /var/www/html/admin
+
+7) Para gerar IPA no bot:
+   envie este ZIP inteiro.
+   O arquivo ProxyADY.xcodeproj está na raiz do ZIP.

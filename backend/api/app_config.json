@@ -1,0 +1,52 @@
+{
+  "app_name": "ProxyADY",
+  "allowed_origin": "*",
+  "keys_file": "/var/www/proxybrasil2026.io.vn/data/ADMIN/keys.json",
+  "max_keys_per_request": 100,
+  "cost_per_key": 1,
+  "admin_pays_for_keys": true,
+  "admin_pays_for_credit_transfer": true,
+  "admin_credit_mode": "add",
+  "allow_admin_downgrade": false,
+  "default_alias": "Admin",
+  "theme": {
+    "primary": "#ff1e1e",
+    "secondary": "#ff4444",
+    "background": "#050505"
+  },
+  "home_ui": {
+    "welcome_text": "",
+    "subtitle_text": "",
+    "online_buttons_title": "",
+    "show_online_buttons_title": false,
+    "show_balance": true,
+    "show_plan": true,
+    "show_admin_panel": true,
+    "balance_title": "Crédito disponível",
+    "plan_text": "",
+    "admin_panel_title": "Painel ADM rápido",
+    "admin_panel_subtitle": "Coloque usuário/email, crédito e cargo",
+    "login_button_text": "Atualizar usuário",
+    "roles": ["free", "seller", "admin"]
+  },
+  "key_ui": {
+    "title_create": "Criar Key",
+    "title_list": "Keys",
+    "show_quantity": true,
+    "show_duration": true,
+    "show_alias": true,
+    "show_package": true,
+    "show_preview": true,
+    "show_auto_clean": false,
+    "show_multiple_activate": false,
+    "create_button_text": "Gerar Key",
+    "copy_button_text": "Copiar",
+    "delete_button_text": "Apagar marcadas",
+    "select_all_text": "Marcar todas",
+    "deselect_text": "Limpar",
+    "duration_options": ["Hora", "Dia", "Semana", "Mês", "Ano"],
+    "default_duration_type": "Hora",
+    "default_alias": "Admin"
+  },
+  "buttons": []
+}

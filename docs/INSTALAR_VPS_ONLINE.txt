@@ -1,0 +1,19 @@
+PROXYADY KEY SYSTEM - servidor ONLINE
+
+API base da IPA:
+http://191.252.210.109/api
+
+Essa versão corrige:
+- login aprovado agora abre a Home
+- registro aprovado abre a Home
+- app aceita email ou usuário no login
+- sessão fica salva
+- tema, nome, cores, botões e funções vêm da servidor
+- sistema só de geração de keys, sem Proxy
+
+Na servidor, os arquivos PHP ficam em:
+/var/www/html/api
+
+Para testar:
+curl -i http://191.252.210.109/api/config.php
+curl -X POST http://191.252.210.109/api/login.php -H "Content-Type: application/json" -d '{"email":"santoscristian.025tw@gmail.com","password":"1234"}'

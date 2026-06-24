@@ -1,0 +1,67 @@
+COMANDOS PARA ATUALIZAR A servidor
+
+1) Suba a pasta backend/api para:
+/var/www/html/api
+
+Ou copie estes arquivos do ZIP:
+backend/api/config.php
+backend/api/generate_key.php
+backend/api/keys.php
+backend/api/delete_keys.php
+backend/api/delete_key.php
+
+2) Permissão:
+chmod -R 777 /var/www/html/api/data
+
+3) Testar config visual online:
+curl http://191.252.210.109/api/config.php
+
+4) Gerar 5 keys com alias Tiago por 1 dia:
+curl -X POST http://191.252.210.109/api/generate_key.php \
+-H "Content-Type: application/json" \
+-d '{"quantity":5,"duration":1,"duration_type":"day","alias":"Tiago","type":"Painel rage","owner":"big"}'
+
+5) Listar keys:
+curl http://191.252.210.109/api/keys.php
+
+6) Apagar várias keys:
+curl -X POST http://191.252.210.109/api/delete_keys.php \
+-H "Content-Type: application/json" \
+-d '{"keys":["Tiago-day-XXXX-XXXX","Tiago-day-YYYY-YYYY"]}'
+
+CONTROLE VISUAL ONLINE
+
+Edite /var/www/html/api/../data/app_config.json se você quiser mudar visual sem recompilar IPA.
+
+Exemplo key_ui:
+"key_ui": {
+  "title_create": "Criar Key",
+  "title_list": "Keys",
+  "show_quantity": true,
+  "show_duration": true,
+  "show_alias": true,
+  "show_package": false,
+  "show_preview": false,
+  "show_auto_clean": false,
+  "show_multiple_activate": false,
+  "create_button_text": "Gerar Key",
+  "copy_button_text": "Copiar",
+  "delete_button_text": "Apagar marcadas",
+  "select_all_text": "Marcar todas",
+  "deselect_text": "Limpar",
+  "duration_options": ["Hora", "Dia", "Semana", "Mês", "Ano"],
+  "default_duration_type": "Hora",
+  "default_alias": "Admin"
+}
+
+Agora a tela de criar key mostra só:
+- Quantidade
+- Duração
+- Hora/Dia/Semana/Mês/Ano
+- Alias
+- Gerar Key
+
+A key gerada sai com alias:
+Admin-hour-XXXX-XXXX
+Tiago-day-XXXX-XXXX
+Rage-week-XXXX-XXXX
